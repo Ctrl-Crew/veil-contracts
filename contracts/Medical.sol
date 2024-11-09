@@ -33,6 +33,7 @@ contract MedicalContract {
         address patientAddress;
         Medication[] medications;
         uint256 issueDate;
+        string diagnosis; // New field for diagnosis
         bool active;
     }
 
@@ -42,7 +43,7 @@ contract MedicalContract {
     uint256 public prescriptionCounter;
 
     event DoctorRegistered(address doctorAddress, string name, uint256 fees);
-    event PrescriptionIssued(uint256 id, address doctorAddress, address patientAddress);
+    event PrescriptionIssued(uint256 id, address doctorAddress, address patientAddress, string diagnosis);
     event PaymentReceived(address indexed patient, address indexed doctor, uint256 amount);
     event TokensWithdrawn(address indexed doctor, uint256 tokenAmount, uint256 ethAmount);
 
@@ -79,10 +80,11 @@ contract MedicalContract {
         patients[msg.sender] = Patient(msg.sender, name);
     }
 
-    // Issue a prescription
+    // Issue a prescription with a diagnosis
     function issuePrescription(
         address patientAddress,
-        Medication[] memory medications
+        Medication[] memory medications,
+        string memory diagnosis
     ) public onlyVerifiedDoctor patientExists(patientAddress) {
         prescriptionCounter++;
         PrescriptionData storage newPrescription = prescriptions[prescriptionCounter];
@@ -90,13 +92,14 @@ contract MedicalContract {
         newPrescription.doctorAddress = msg.sender;
         newPrescription.patientAddress = patientAddress;
         newPrescription.issueDate = block.timestamp;
+        newPrescription.diagnosis = diagnosis; // Set the diagnosis
         newPrescription.active = true;
 
         for (uint i = 0; i < medications.length; i++) {
             newPrescription.medications.push(medications[i]);
         }
 
-        emit PrescriptionIssued(prescriptionCounter, msg.sender, patientAddress);
+        emit PrescriptionIssued(prescriptionCounter, msg.sender, patientAddress, diagnosis);
     }
 
     // Patient pays the doctor in HealthTokens

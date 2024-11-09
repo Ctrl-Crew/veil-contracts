@@ -1,5 +1,3 @@
 {
-  "VotingModule#VotingContract": "0x19A589358B2E652C300203b88cA266dDB4838aEA",
-  "HealthTokenModule#HealthToken": "0x4bAeF854339EAC9A936B4Ee36eb4d11feE4cb3a7",
-  "MedicalModule#MedicalContract": "0x38fa9C7fc48690Df2b9D628c810428cc450f79cf"
+  "HealthTokenModule#HealthToken": "0x1Fa1aC9446C483478c8DB36846F3711D9b5914e6"
 }
